@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_miligramos", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="fk_tblmiligramos_tblfarmacos", columns={"id_farmaco"})})
  * @ORM\Entity
  */
-class TblMiligramos
+class TblMiligramos implements \JsonSerializable
 {
     /**
      * @var int
@@ -31,7 +31,7 @@ class TblMiligramos
     /**
      * @var \TblFarmacos
      *
-     * @ORM\ManyToOne(targetEntity="TblFarmacos")
+     * @ORM\ManyToOne(targetEntity="TblFarmacos", inversedBy="miligramo")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_farmaco", referencedColumnName="id")
      * })
@@ -67,5 +67,12 @@ class TblMiligramos
         return $this;
     }
 
-
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'miligramo' => $this->getMiligramo(),
+            'id_farmaco' => $this->getIdFarmaco()
+        ];
+    }
 }

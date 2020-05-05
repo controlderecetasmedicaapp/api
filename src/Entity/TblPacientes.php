@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TblPacientes
@@ -10,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_pacientes", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="fk_tblpacientes_tblcomunas", columns={"id_comuna"}), @ORM\Index(name="fk_tblpacientes_tblsexo", columns={"id_sexo"}), @ORM\Index(name="fk_tblpacientes_tblusuarios", columns={"id_paciente"})})
  * @ORM\Entity
  */
-class TblPacientes
+class TblPacientes implements \JsonSerializable
 {
     /**
      * @var int
@@ -25,6 +28,19 @@ class TblPacientes
      * @var string
      *
      * @ORM\Column(name="nombre_paciente", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="#^[A-Za-zÃ€-Ã¿ ,.'-]+$#",
+     *     match=true,
+     *     message="Tu nombre solo puede tener caracteres, no números"
+     * )
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "Su nombre debe tener al menos {{ limit }} caracteres de longitud",
+     *      maxMessage = "Su nombre no puede tener más de {{ limit }} caracteres"
+     * )
      */
     private $nombrePaciente;
 
@@ -32,6 +48,19 @@ class TblPacientes
      * @var string
      *
      * @ORM\Column(name="apellido_paciente", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="#^[A-Za-zÃ€-Ã¿ ,.'-]+$#",
+     *     match=true,
+     *     message="Tus apellidos solo puede tener caracteres, no números"
+     * )
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "Sus apellidos debe tener al menos {{ limit }} caracteres de longitud",
+     *      maxMessage = "Sus apellidos no puede tener más de {{ limit }} caracteres"
+     * )
      */
     private $apellidoPaciente;
 
@@ -53,6 +82,9 @@ class TblPacientes
      * @var string|null
      *
      * @ORM\Column(name="email_paciente", type="string", length=255, nullable=true)
+     * @Assert\Email(
+     *     message = "El email '{{ value }}' no es un email valido"
+     * )
      */
     private $emailPaciente;
 
@@ -67,6 +99,12 @@ class TblPacientes
      * @var int
      *
      * @ORM\Column(name="peso", type="integer", nullable=false)
+     * @Assert\Range(
+     *      min = 2,
+     *      max = 190,
+     *     notInRangeMessage="Debe tener al menos {{ min }} kl para ingresar y No puedes tener mas {{ max }} kl y ud puso {{ value }} kl"
+     * )
+     *
      */
     private $peso;
 
@@ -74,6 +112,11 @@ class TblPacientes
      * @var int
      *
      * @ORM\Column(name="altura", type="integer", nullable=false)
+     * @Assert\Range(
+     *      min = 43,
+     *      max = 200,
+     *     notInRangeMessage="El no puede ser mas bajo que {{ min }} cm y No puedes ser mas alto que {{ max }} metro y ud puso {{ value }}"
+     * )
      */
     private $altura;
 
@@ -94,7 +137,7 @@ class TblPacientes
     /**
      * @var \TblComunas
      *
-     * @ORM\ManyToOne(targetEntity="TblComunas")
+     * @ORM\ManyToOne(targetEntity="TblComunas", inversedBy="paciente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_comuna", referencedColumnName="id")
      * })
@@ -104,7 +147,7 @@ class TblPacientes
     /**
      * @var \TblSexo
      *
-     * @ORM\ManyToOne(targetEntity="TblSexo")
+     * @ORM\ManyToOne(targetEntity="TblSexo", inversedBy="paciente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_sexo", referencedColumnName="id")
      * })
@@ -114,12 +157,28 @@ class TblPacientes
     /**
      * @var \TblUsuarios
      *
-     * @ORM\ManyToOne(targetEntity="TblUsuarios")
+     * @ORM\ManyToOne(targetEntity="TblUsuarios", inversedBy="paciente")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_paciente", referencedColumnName="id")
      * })
      */
     private $idPaciente;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblMedicosTratantes", mappedBy="idPaciente")
+     */
+    private $medicoTratante;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblPrescripciones", mappedBy="idPaciente")
+     */
+    private $prescripcion;
+
+    public function __construct()
+    {
+        $this->medicoTratante = new ArrayCollection();
+        $this->prescripcion = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -282,5 +341,42 @@ class TblPacientes
         return $this;
     }
 
+    /**
+     * @return Collection|TblMedicosTratantes[]
+     */
+    public function getMedicoTratante(): Collection
+    {
+        return $this->medicoTratante;
+    }
 
+    /**
+     * @return Collection|TblPrescripciones[]
+     */
+    public function getPrescripcion(): Collection
+    {
+        return $this->prescripcion;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'id_paciente' => $this->getIdPaciente(),
+            'nombre_paciente' => $this->getNombrePaciente(),
+            'apellidos_paciente' => $this->getApellidoPaciente(),
+            'direccion_paciente' => $this->getDireccionPaciente(),
+            'fono_paciente' => $this->getFonoPaciente(),
+            'email_paciente' => $this->getEmailPaciente(),
+            'peso' => $this->getPeso(),
+            'altura' => $this->getAltura(),
+            'id_sexo' => $this->getIdSexo(),
+            'id_comuna' => $this->getIdComuna(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt(),
+            'medicoTratante' => $this->getMedicoTratante(),
+            'prescripcion' => $this->getPrescripcion(),
+            'fechaNacimiento' => $this->getFechaNacimiento()
+
+        ];
+    }
 }

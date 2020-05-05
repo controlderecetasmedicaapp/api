@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * TblTiposUsuarios
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_tipos_usuarios", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
-class TblTiposUsuarios
+class TblTiposUsuarios implements \JsonSerializable
 {
     /**
      * @var int
@@ -27,6 +29,16 @@ class TblTiposUsuarios
      * @ORM\Column(name="tipo_usuario", type="string", length=255, nullable=false)
      */
     private $tipoUsuario;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblUsuarios", mappedBy="idTipoUsuario")
+     */
+    private $usuario;
+
+    public function __construct()
+    {
+        $this->usuario = new  ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -45,5 +57,20 @@ class TblTiposUsuarios
         return $this;
     }
 
+    /**
+     * @return Collection|TblUsuarios[]
+     */
+    public function getUsuario(): Collection
+    {
+        return $this->usuario;
+    }
 
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'tipo_usuario' => $this->getTipoUsuario(),
+            'usuario' => $this->getUsuario()
+        ];
+    }
 }

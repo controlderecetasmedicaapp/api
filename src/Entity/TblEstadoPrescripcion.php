@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * TblEstadoPrescripcion
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_estado_prescripcion", uniqueConstraints={@ORM\UniqueConstraint(name="estado", columns={"estado"}), @ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
-class TblEstadoPrescripcion
+class TblEstadoPrescripcion implements \JsonSerializable
 {
     /**
      * @var int
@@ -27,6 +29,16 @@ class TblEstadoPrescripcion
      * @ORM\Column(name="estado", type="string", length=255, nullable=false)
      */
     private $estado;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblPrescripciones", mappedBy="idEstado")
+     */
+    private $prescripcion;
+
+    public function __construct()
+    {
+        $this->prescripcion = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -45,5 +57,20 @@ class TblEstadoPrescripcion
         return $this;
     }
 
+    /**
+     * @return Collection|TblPrescripciones[]
+     */
+    public function getPrescripcion(): Collection
+    {
+        return $this->prescripcion;
+    }
 
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'estado' => $this->getEstado(),
+            'prescripcion' => $this->getPrescripcion()
+        ];
+    }
 }

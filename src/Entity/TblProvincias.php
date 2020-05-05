@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * TblProvincias
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_provincias", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
-class TblProvincias
+class TblProvincias implements \JsonSerializable
 {
     /**
      * @var int
@@ -27,6 +29,16 @@ class TblProvincias
      * @ORM\Column(name="provincia", type="string", length=255, nullable=false)
      */
     private $provincia;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblComunas", mappedBy="idProvincia")
+     */
+    private $comuna;
+
+    public function __construct()
+    {
+        $this->comuna = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -45,5 +57,21 @@ class TblProvincias
         return $this;
     }
 
+    /**
+     * @return Collection|TblComunas[]
+     */
+    public function getComuna(): Collection
+    {
+        return $this->comuna;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'provincia' => $this->getProvincia(),
+            'comuna' => $this->getComuna()
+        ];
+    }
 
 }

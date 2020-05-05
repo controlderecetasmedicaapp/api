@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_medicos_tratantes", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="fk_tblmedicostratantes_tblmedicos", columns={"id_medico"}), @ORM\Index(name="fk_tblmedicostratantes_tblpacientes", columns={"id_paciente"})})
  * @ORM\Entity
  */
-class TblMedicosTratantes
+class TblMedicosTratantes implements \JsonSerializable
 {
     /**
      * @var int
@@ -24,7 +24,7 @@ class TblMedicosTratantes
     /**
      * @var \TblMedicos
      *
-     * @ORM\ManyToOne(targetEntity="TblMedicos")
+     * @ORM\ManyToOne(targetEntity="TblMedicos", inversedBy="medicoTratante")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_medico", referencedColumnName="id")
      * })
@@ -34,7 +34,7 @@ class TblMedicosTratantes
     /**
      * @var \TblPacientes
      *
-     * @ORM\ManyToOne(targetEntity="TblPacientes")
+     * @ORM\ManyToOne(targetEntity="TblPacientes", inversedBy="medicoTratante")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_paciente", referencedColumnName="id")
      * })
@@ -70,5 +70,12 @@ class TblMedicosTratantes
         return $this;
     }
 
-
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'id_paciente' => $this->getIdPaciente(),
+            'id_medico' => $this->getIdMedico()
+        ];
+    }
 }

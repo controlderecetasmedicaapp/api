@@ -3,14 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
- * TblEstablecimientos
+ * TblEstablecimiento
  *
  * @ORM\Table(name="tbl_establecimientos", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"}), @ORM\UniqueConstraint(name="rut_establecimiento", columns={"rut_establecimiento"})}, indexes={@ORM\Index(name="fk_tblestablecimientos_tblcomunas", columns={"id_comuna"}), @ORM\Index(name="fk_tblestablecimientos_tblimagenes", columns={"id_imagen"})})
  * @ORM\Entity
  */
-class TblEstablecimientos
+class TblEstablecimientos implements \JsonSerializable
 {
     /**
      * @var int
@@ -73,7 +75,7 @@ class TblEstablecimientos
     /**
      * @var \TblComunas
      *
-     * @ORM\ManyToOne(targetEntity="TblComunas")
+     * @ORM\ManyToOne(targetEntity="TblComunas", inversedBy="establecimiento")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_comuna", referencedColumnName="id")
      * })
@@ -83,12 +85,22 @@ class TblEstablecimientos
     /**
      * @var \TblImagenes
      *
-     * @ORM\ManyToOne(targetEntity="TblImagenes")
+     * @ORM\ManyToOne(targetEntity="TblImagenes", inversedBy="establecimiento")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_imagen", referencedColumnName="id")
      * })
      */
     private $idImagen;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblMedicos", mappedBy="idEstablecimiento")
+     */
+    private $medico;
+
+    public function __construct()
+    {
+        $this->medico = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -203,5 +215,29 @@ class TblEstablecimientos
         return $this;
     }
 
+    /**
+     * @return Collection|TblMedicos[]
+     */
+    public function getMedico(): Collection
+    {
+        return $this->medico;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'rut_establecimiento' => $this->getRutEstablecimiento(),
+            'nombre_establecimiento' => $this->getNombreEstablecimiento(),
+            'direccion_establecimiento' => $this->getDireccionEstablecimiento(),
+            'id_comuna' => $this->getIdComuna(),
+            'fono_establecimiento' => $this->getFonoEstablecimiento(),
+            'email_establecimiento' => $this->getEmailEstablecimiento(),
+            'id_imagen' => $this->getIdImagen(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt(),
+            'medico' => $this->getMedico()
+        ];
+    }
 
 }

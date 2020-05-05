@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * TblEspecialidades
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_especialidades", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
-class TblEspecialidades
+class TblEspecialidades implements \JsonSerializable
 {
     /**
      * @var int
@@ -27,6 +29,17 @@ class TblEspecialidades
      * @ORM\Column(name="especialidad", type="string", length=255, nullable=false)
      */
     private $especialidad;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblMedicos", mappedBy="idEspecialidad")
+     */
+    private $medico;
+
+    public function __construct()
+    {
+        $this->medico = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -45,5 +58,20 @@ class TblEspecialidades
         return $this;
     }
 
+    /**
+     * @return Collection|TblMedicos[]
+     */
+    public function getMedico(): Collection
+    {
+        return $this->medico;
+    }
 
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'especialidad' => $this->getEspecialidad(),
+            'medico' => $this->getMedico()
+        ];
+    }
 }

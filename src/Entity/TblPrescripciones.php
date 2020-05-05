@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_prescripciones", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="fk_tblprescripciones_tblEstadoPrescripcion", columns={"id_estado"}), @ORM\Index(name="fk_tblprescripciones_tblmedicos", columns={"id_medico"}), @ORM\Index(name="fk_tblprescripciones_tblpacientes", columns={"id_paciente"}), @ORM\Index(name="fk_tblprescripciones_tbltiposprescripcion", columns={"id_tipo_prescripcion"})})
  * @ORM\Entity
  */
-class TblPrescripciones
+class TblPrescripciones implements \JsonSerializable
 {
     /**
      * @var int
@@ -52,7 +52,7 @@ class TblPrescripciones
     /**
      * @var \TblEstadoPrescripcion
      *
-     * @ORM\ManyToOne(targetEntity="TblEstadoPrescripcion")
+     * @ORM\ManyToOne(targetEntity="TblEstadoPrescripcion", inversedBy="prescripcion")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_estado", referencedColumnName="id")
      * })
@@ -62,7 +62,7 @@ class TblPrescripciones
     /**
      * @var \TblMedicos
      *
-     * @ORM\ManyToOne(targetEntity="TblMedicos")
+     * @ORM\ManyToOne(targetEntity="TblMedicos", inversedBy="prescripcion")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_medico", referencedColumnName="id")
      * })
@@ -72,7 +72,7 @@ class TblPrescripciones
     /**
      * @var \TblPacientes
      *
-     * @ORM\ManyToOne(targetEntity="TblPacientes")
+     * @ORM\ManyToOne(targetEntity="TblPacientes", inversedBy="prescripcion")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_paciente", referencedColumnName="id")
      * })
@@ -82,7 +82,7 @@ class TblPrescripciones
     /**
      * @var \TblTiposPrescripciones
      *
-     * @ORM\ManyToOne(targetEntity="TblTiposPrescripciones")
+     * @ORM\ManyToOne(targetEntity="TblTiposPrescripciones", inversedBy="prescripcion")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_tipo_prescripcion", referencedColumnName="id")
      * })
@@ -190,5 +190,18 @@ class TblPrescripciones
         return $this;
     }
 
-
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'prescripcion_code' => $this->getPrescripcionCode(),
+            'id_paciente' => $this->getIdPaciente(),
+            'id_medico' => $this->getIdMedico(),
+            'duracion_tratamiento' => $this->getDuracionTratamiento(),
+            'id_tipo_prescripcion' => $this->getIdTipoPrescripcion(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt(),
+            'estado' => $this->getIdEstado()
+        ];
+    }
 }

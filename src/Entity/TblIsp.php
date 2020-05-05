@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TblIsp
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_isp", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="fk_tblIsp_tblcomunas", columns={"id_comuna"}), @ORM\Index(name="fk_tblIsp_tblusuarios", columns={"id_isp"})})
  * @ORM\Entity
  */
-class TblIsp
+class TblIsp implements \JsonSerializable
 {
     /**
      * @var int
@@ -25,6 +26,19 @@ class TblIsp
      * @var string
      *
      * @ORM\Column(name="nombre_isp", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="#^[A-Za-zÃ€-Ã¿ ,.'-]+$#",
+     *     match=true,
+     *     message="Tu nombre solo puede tener caracteres, no números"
+     * )
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "Su nombre debe tener al menos {{ limit }} caracteres de longitud",
+     *      maxMessage = "Su nombre no puede tener más de {{ limit }} caracteres"
+     * )
      */
     private $nombreIsp;
 
@@ -32,6 +46,20 @@ class TblIsp
      * @var string
      *
      * @ORM\Column(name="apellido_isp", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="#^[A-Za-zÃ€-Ã¿ ,.'-]+$#",
+     *     match=true,
+     *     message="Tus apellidos solo puede tener caracteres, no números"
+     * )
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "Sus apellidos debe tener al menos {{ limit }} caracteres de longitud",
+     *      maxMessage = "Sus apellidos no puede tener más de {{ limit }} caracteres"
+     * )
+
      */
     private $apellidoIsp;
 
@@ -40,7 +68,7 @@ class TblIsp
      *
      * @ORM\Column(name="direcicon_isp", type="string", length=255, nullable=false)
      */
-    private $direciconIsp;
+    private $direccionIsp;
 
     /**
      * @var string
@@ -53,6 +81,11 @@ class TblIsp
      * @var string
      *
      * @ORM\Column(name="email_isp", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Email(
+     *     message = "El email '{{ value }}' no es un email valido"
+     * )
      */
     private $emailIsp;
 
@@ -73,7 +106,7 @@ class TblIsp
     /**
      * @var \TblComunas
      *
-     * @ORM\ManyToOne(targetEntity="TblComunas")
+     * @ORM\ManyToOne(targetEntity="TblComunas", inversedBy="isp")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_comuna", referencedColumnName="id")
      * })
@@ -83,7 +116,7 @@ class TblIsp
     /**
      * @var \TblUsuarios
      *
-     * @ORM\ManyToOne(targetEntity="TblUsuarios")
+     * @ORM\ManyToOne(targetEntity="TblUsuarios", inversedBy="isp")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_isp", referencedColumnName="id")
      * })
@@ -119,14 +152,14 @@ class TblIsp
         return $this;
     }
 
-    public function getDireciconIsp(): ?string
+    public function getDireccionIsp(): ?string
     {
-        return $this->direciconIsp;
+        return $this->direccionIsp;
     }
 
-    public function setDireciconIsp(string $direciconIsp): self
+    public function setDireccionIsp(string $direccionIsp): self
     {
-        $this->direciconIsp = $direciconIsp;
+        $this->direccionIsp = $direccionIsp;
 
         return $this;
     }
@@ -203,5 +236,19 @@ class TblIsp
         return $this;
     }
 
-
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'id_isp' => $this->getIdIsp(),
+            'nombre_isp' => $this->getNombreIsp(),
+            'apellido_isp' => $this->getApellidoIsp(),
+            'direccion_isp' => $this->getdireccionIsp(),
+            'fono_isp' => $this->getFonoIsp(),
+            'email_isp' => $this->getEmailIsp(),
+            'id_comuna' => $this->getIdComuna(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt()
+        ];
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TblFarmacias
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_farmacias", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="fk_tblfarmacias_tblcomunas", columns={"id_comuna"}), @ORM\Index(name="fk_tblfarmacias_tblimagenes", columns={"id_imagen"}), @ORM\Index(name="fk_tblfarmacias_tblusuarios", columns={"id_farmacia"})})
  * @ORM\Entity
  */
-class TblFarmacias
+class TblFarmacias implements \JsonSerializable
 {
     /**
      * @var int
@@ -32,6 +33,19 @@ class TblFarmacias
      * @var string
      *
      * @ORM\Column(name="direccion_farmacia", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="#^[A-Za-zÃ€-Ã¿ ,.'-]+$#",
+     *     match=true,
+     *     message="El nombre de la farmacia tiene que tener solo caracteres, no números"
+     * )
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "El nombre de la farmacia debe tener al menos {{ limit }} caracteres de longitud",
+     *      maxMessage = "El nombre de la farmacia no puede tener más de {{ limit }} caracteres"
+     * )
      */
     private $direccionFarmacia;
 
@@ -46,6 +60,11 @@ class TblFarmacias
      * @var string
      *
      * @ORM\Column(name="email_farmacia", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Email(
+     *     message = "El email '{{ value }}' no es un email valido"
+     * )
      */
     private $emailFarmacia;
 
@@ -66,7 +85,7 @@ class TblFarmacias
     /**
      * @var \TblComunas
      *
-     * @ORM\ManyToOne(targetEntity="TblComunas")
+     * @ORM\ManyToOne(targetEntity="TblComunas", inversedBy="farmacia")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_comuna", referencedColumnName="id")
      * })
@@ -76,7 +95,7 @@ class TblFarmacias
     /**
      * @var \TblImagenes
      *
-     * @ORM\ManyToOne(targetEntity="TblImagenes")
+     * @ORM\ManyToOne(targetEntity="TblImagenes", inversedBy="farmacia")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_imagen", referencedColumnName="id")
      * })
@@ -86,7 +105,7 @@ class TblFarmacias
     /**
      * @var \TblUsuarios
      *
-     * @ORM\ManyToOne(targetEntity="TblUsuarios")
+     * @ORM\ManyToOne(targetEntity="TblUsuarios", inversedBy="farmacia")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_farmacia", referencedColumnName="id")
      * })
@@ -206,5 +225,19 @@ class TblFarmacias
         return $this;
     }
 
-
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'id_farmacia' => $this->getIdFarmacia(),
+            'nombre_farmacia' => $this->getNombreFarmacia(),
+            'direccion_farmacia' => $this->getDireccionFarmacia(),
+            'id_comuna' => $this->getIdComuna(),
+            'fono_farmacia' => $this->getFonoFarmacia(),
+            'email_farmacia' => $this->getEmailFarmacia(),
+            'id_imagen' => $this->getIdImagen(),
+            'created_at' => $this->getCreatedAt(),
+            'updated_at' => $this->getUpdatedAt()
+        ];
+    }
 }

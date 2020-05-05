@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TblMedicos
@@ -10,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_medicos", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="fk_tblmedicos_tblcomunas", columns={"id_comuna"}), @ORM\Index(name="fk_tblmedicos_tblespecialidades", columns={"id_especialidad"}), @ORM\Index(name="fk_tblmedicos_tblestablecimiento", columns={"id_establecimiento"}), @ORM\Index(name="fk_tblmedicos_tblusuarios", columns={"id_medico"})})
  * @ORM\Entity
  */
-class TblMedicos
+class TblMedicos implements \JsonSerializable
 {
     /**
      * @var int
@@ -32,6 +35,19 @@ class TblMedicos
      * @var string
      *
      * @ORM\Column(name="nombre_medico", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="#^[A-Za-zÃ€-Ã¿ ,.'-]+$#",
+     *     match=true,
+     *     message="Tu nombre solo puede tener caracteres, no números"
+     * )
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "Su nombre debe tener al menos {{ limit }} caracteres de longitud",
+     *      maxMessage = "Su nombre no puede tener más de {{ limit }} caracteres"
+     * )
      */
     private $nombreMedico;
 
@@ -39,6 +55,20 @@ class TblMedicos
      * @var string
      *
      * @ORM\Column(name="apellidos_medico", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Regex(
+     *     pattern="#^[A-Za-zÃ€-Ã¿ ,.'-]+$#",
+     *     match=true,
+     *     message="Tus apellidos solo puede tener caracteres, no números"
+     * )
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "Sus apellidos debe tener al menos {{ limit }} caracteres de longitud",
+     *      maxMessage = "Sus apellidos no puede tener más de {{ limit }} caracteres"
+     * )
+
      */
     private $apellidosMedico;
 
@@ -53,6 +83,11 @@ class TblMedicos
      * @var string
      *
      * @ORM\Column(name="email_medico", type="string", length=255, nullable=false)
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Email(
+     *     message = "El email '{{ value }}' no es un email valido"
+     * )
      */
     private $emailMedico;
 
@@ -73,7 +108,7 @@ class TblMedicos
     /**
      * @var \TblComunas
      *
-     * @ORM\ManyToOne(targetEntity="TblComunas")
+     * @ORM\ManyToOne(targetEntity="TblComunas", inversedBy="medico")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_comuna", referencedColumnName="id")
      * })
@@ -83,7 +118,7 @@ class TblMedicos
     /**
      * @var \TblEspecialidades
      *
-     * @ORM\ManyToOne(targetEntity="TblEspecialidades")
+     * @ORM\ManyToOne(targetEntity="TblEspecialidades", inversedBy="medico")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_especialidad", referencedColumnName="id")
      * })
@@ -93,7 +128,7 @@ class TblMedicos
     /**
      * @var \TblEstablecimientos
      *
-     * @ORM\ManyToOne(targetEntity="TblEstablecimientos")
+     * @ORM\ManyToOne(targetEntity="TblEstablecimientos", inversedBy="medico")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_establecimiento", referencedColumnName="id")
      * })
@@ -103,12 +138,28 @@ class TblMedicos
     /**
      * @var \TblUsuarios
      *
-     * @ORM\ManyToOne(targetEntity="TblUsuarios")
+     * @ORM\ManyToOne(targetEntity="TblUsuarios", inversedBy="medico")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_medico", referencedColumnName="id")
      * })
      */
     private $idMedico;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblMedicosTratantes", mappedBy="idMedico")
+     */
+    private $medicoTratante;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblPrescripciones", mappedBy="idMedico")
+     */
+    private $prescripcion;
+
+    public function __construct()
+    {
+        $this->medicoTratante = new ArrayCollection();
+        $this->prescripcion = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -247,5 +298,39 @@ class TblMedicos
         return $this;
     }
 
+    /**
+     * @return Collection|TblMedicosTratantes[]
+     */
+    public function getMedicoTratante(): Collection
+    {
+        return $this->medicoTratante;
+    }
 
+    /**
+     * @return Collection|TblPrescripciones[]
+     */
+    public function getPrescripcion(): Collection
+    {
+        return $this->prescripcion;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'id_medico' => $this->getIdMedico(),
+            'rcm' => $this->getRcmMedico(),
+            'nombre_medico' => $this->getNombreMedico(),
+            'apellido_medico' => $this->getApellidosMedico(),
+            'direccion_medico' => $this->getDireccionMedico(),
+            'fono_medico' => $this->getFonoMedico(),
+            'email_medico' => $this->getEmailMedico(),
+            'id_comuna' => $this->getIdComuna(),
+            'id_establecimiento' => $this->getIdEstablecimiento(),
+            'id_especialidad' => $this->getIdEspecialidad(),
+            'firma' => $this->getFirmaMedico(),
+            'MedicoTratante' => $this->getMedicoTratante(),
+            'prescripcion' => $this->getPrescripcion()
+        ];
+    }
 }

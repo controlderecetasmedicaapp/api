@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * TblFarmacos
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tbl_farmacos", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="fk_tblfarmacos_tbltiposprescripciones", columns={"id_tipo_prescripcion"})})
  * @ORM\Entity
  */
-class TblFarmacos
+class TblFarmacos implements \JsonSerializable
 {
     /**
      * @var int
@@ -31,12 +33,22 @@ class TblFarmacos
     /**
      * @var \TblTiposPrescripciones
      *
-     * @ORM\ManyToOne(targetEntity="TblTiposPrescripciones")
+     * @ORM\ManyToOne(targetEntity="TblTiposPrescripciones", inversedBy="farmaco")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_tipo_prescripcion", referencedColumnName="id")
      * })
      */
     private $idTipoPrescripcion;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TblMiligramos", mappedBy="idFarmaco")
+     */
+    private $miligramo;
+
+    public function __construct()
+    {
+        $this->miligramo = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -67,5 +79,22 @@ class TblFarmacos
         return $this;
     }
 
+    /**
+     * @return Collection|TblMiligramos[]
+     */
+    public function getMiligramo(): Collection
+    {
+        return $this->miligramo;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'nombre_farmaco' => $this->getNombreFarmaco(),
+            'id_tipo_prescripcion' => $this->getIdTipoPrescripcion(),
+            'miligramo' => $this->getMiligramo()
+        ];
+    }
 
 }
