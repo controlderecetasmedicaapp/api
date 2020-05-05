@@ -28,5 +28,22 @@ class TblTiposUsuarios
      */
     private $tipoUsuario;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTipoUsuario(): ?string
+    {
+        return $this->tipoUsuario;
+    }
+
+    public function setTipoUsuario(string $tipoUsuario): self
+    {
+        $this->tipoUsuario = $tipoUsuario;
+
+        return $this;
+    }
+
 
 }

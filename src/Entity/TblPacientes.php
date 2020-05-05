@@ -121,5 +121,166 @@ class TblPacientes
      */
     private $idPaciente;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNombrePaciente(): ?string
+    {
+        return $this->nombrePaciente;
+    }
+
+    public function setNombrePaciente(string $nombrePaciente): self
+    {
+        $this->nombrePaciente = $nombrePaciente;
+
+        return $this;
+    }
+
+    public function getApellidoPaciente(): ?string
+    {
+        return $this->apellidoPaciente;
+    }
+
+    public function setApellidoPaciente(string $apellidoPaciente): self
+    {
+        $this->apellidoPaciente = $apellidoPaciente;
+
+        return $this;
+    }
+
+    public function getDireccionPaciente(): ?string
+    {
+        return $this->direccionPaciente;
+    }
+
+    public function setDireccionPaciente(string $direccionPaciente): self
+    {
+        $this->direccionPaciente = $direccionPaciente;
+
+        return $this;
+    }
+
+    public function getFonoPaciente(): ?string
+    {
+        return $this->fonoPaciente;
+    }
+
+    public function setFonoPaciente(string $fonoPaciente): self
+    {
+        $this->fonoPaciente = $fonoPaciente;
+
+        return $this;
+    }
+
+    public function getEmailPaciente(): ?string
+    {
+        return $this->emailPaciente;
+    }
+
+    public function setEmailPaciente(?string $emailPaciente): self
+    {
+        $this->emailPaciente = $emailPaciente;
+
+        return $this;
+    }
+
+    public function getFechaNacimiento(): ?\DateTimeInterface
+    {
+        return $this->fechaNacimiento;
+    }
+
+    public function setFechaNacimiento(\DateTimeInterface $fechaNacimiento): self
+    {
+        $this->fechaNacimiento = $fechaNacimiento;
+
+        return $this;
+    }
+
+    public function getPeso(): ?int
+    {
+        return $this->peso;
+    }
+
+    public function setPeso(int $peso): self
+    {
+        $this->peso = $peso;
+
+        return $this;
+    }
+
+    public function getAltura(): ?int
+    {
+        return $this->altura;
+    }
+
+    public function setAltura(int $altura): self
+    {
+        $this->altura = $altura;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getIdComuna(): ?TblComunas
+    {
+        return $this->idComuna;
+    }
+
+    public function setIdComuna(?TblComunas $idComuna): self
+    {
+        $this->idComuna = $idComuna;
+
+        return $this;
+    }
+
+    public function getIdSexo(): ?TblSexo
+    {
+        return $this->idSexo;
+    }
+
+    public function setIdSexo(?TblSexo $idSexo): self
+    {
+        $this->idSexo = $idSexo;
+
+        return $this;
+    }
+
+    public function getIdPaciente(): ?TblUsuarios
+    {
+        return $this->idPaciente;
+    }
+
+    public function setIdPaciente(?TblUsuarios $idPaciente): self
+    {
+        $this->idPaciente = $idPaciente;
+
+        return $this;
+    }
+
 
 }

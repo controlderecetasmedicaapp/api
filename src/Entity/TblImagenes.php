@@ -28,5 +28,22 @@ class TblImagenes
      */
     private $file0;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getFile0(): ?string
+    {
+        return $this->file0;
+    }
+
+    public function setFile0(string $file0): self
+    {
+        $this->file0 = $file0;
+
+        return $this;
+    }
+
 
 }

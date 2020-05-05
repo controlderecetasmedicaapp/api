@@ -38,5 +38,34 @@ class TblComunas
      */
     private $idProvincia;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getComuna(): ?string
+    {
+        return $this->comuna;
+    }
+
+    public function setComuna(string $comuna): self
+    {
+        $this->comuna = $comuna;
+
+        return $this;
+    }
+
+    public function getIdProvincia(): ?TblProvincias
+    {
+        return $this->idProvincia;
+    }
+
+    public function setIdProvincia(?TblProvincias $idProvincia): self
+    {
+        $this->idProvincia = $idProvincia;
+
+        return $this;
+    }
+
 
 }

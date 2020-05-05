@@ -41,5 +41,34 @@ class TblMedicosTratantes
      */
     private $idPaciente;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getIdMedico(): ?TblMedicos
+    {
+        return $this->idMedico;
+    }
+
+    public function setIdMedico(?TblMedicos $idMedico): self
+    {
+        $this->idMedico = $idMedico;
+
+        return $this;
+    }
+
+    public function getIdPaciente(): ?TblPacientes
+    {
+        return $this->idPaciente;
+    }
+
+    public function setIdPaciente(?TblPacientes $idPaciente): self
+    {
+        $this->idPaciente = $idPaciente;
+
+        return $this;
+    }
+
 
 }

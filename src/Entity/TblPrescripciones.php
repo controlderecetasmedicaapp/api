@@ -89,5 +89,106 @@ class TblPrescripciones
      */
     private $idTipoPrescripcion;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getPrescripcionCode(): ?string
+    {
+        return $this->prescripcionCode;
+    }
+
+    public function setPrescripcionCode(string $prescripcionCode): self
+    {
+        $this->prescripcionCode = $prescripcionCode;
+
+        return $this;
+    }
+
+    public function getDuracionTratamiento(): ?int
+    {
+        return $this->duracionTratamiento;
+    }
+
+    public function setDuracionTratamiento(int $duracionTratamiento): self
+    {
+        $this->duracionTratamiento = $duracionTratamiento;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getIdEstado(): ?TblEstadoPrescripcion
+    {
+        return $this->idEstado;
+    }
+
+    public function setIdEstado(?TblEstadoPrescripcion $idEstado): self
+    {
+        $this->idEstado = $idEstado;
+
+        return $this;
+    }
+
+    public function getIdMedico(): ?TblMedicos
+    {
+        return $this->idMedico;
+    }
+
+    public function setIdMedico(?TblMedicos $idMedico): self
+    {
+        $this->idMedico = $idMedico;
+
+        return $this;
+    }
+
+    public function getIdPaciente(): ?TblPacientes
+    {
+        return $this->idPaciente;
+    }
+
+    public function setIdPaciente(?TblPacientes $idPaciente): self
+    {
+        $this->idPaciente = $idPaciente;
+
+        return $this;
+    }
+
+    public function getIdTipoPrescripcion(): ?TblTiposPrescripciones
+    {
+        return $this->idTipoPrescripcion;
+    }
+
+    public function setIdTipoPrescripcion(?TblTiposPrescripciones $idTipoPrescripcion): self
+    {
+        $this->idTipoPrescripcion = $idTipoPrescripcion;
+
+        return $this;
+    }
+
 
 }

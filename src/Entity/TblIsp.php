@@ -90,5 +90,118 @@ class TblIsp
      */
     private $idIsp;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNombreIsp(): ?string
+    {
+        return $this->nombreIsp;
+    }
+
+    public function setNombreIsp(string $nombreIsp): self
+    {
+        $this->nombreIsp = $nombreIsp;
+
+        return $this;
+    }
+
+    public function getApellidoIsp(): ?string
+    {
+        return $this->apellidoIsp;
+    }
+
+    public function setApellidoIsp(string $apellidoIsp): self
+    {
+        $this->apellidoIsp = $apellidoIsp;
+
+        return $this;
+    }
+
+    public function getDireciconIsp(): ?string
+    {
+        return $this->direciconIsp;
+    }
+
+    public function setDireciconIsp(string $direciconIsp): self
+    {
+        $this->direciconIsp = $direciconIsp;
+
+        return $this;
+    }
+
+    public function getFonoIsp(): ?string
+    {
+        return $this->fonoIsp;
+    }
+
+    public function setFonoIsp(string $fonoIsp): self
+    {
+        $this->fonoIsp = $fonoIsp;
+
+        return $this;
+    }
+
+    public function getEmailIsp(): ?string
+    {
+        return $this->emailIsp;
+    }
+
+    public function setEmailIsp(string $emailIsp): self
+    {
+        $this->emailIsp = $emailIsp;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getIdComuna(): ?TblComunas
+    {
+        return $this->idComuna;
+    }
+
+    public function setIdComuna(?TblComunas $idComuna): self
+    {
+        $this->idComuna = $idComuna;
+
+        return $this;
+    }
+
+    public function getIdIsp(): ?TblUsuarios
+    {
+        return $this->idIsp;
+    }
+
+    public function setIdIsp(?TblUsuarios $idIsp): self
+    {
+        $this->idIsp = $idIsp;
+
+        return $this;
+    }
+
 
 }

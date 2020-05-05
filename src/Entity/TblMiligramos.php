@@ -38,5 +38,34 @@ class TblMiligramos
      */
     private $idFarmaco;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getMiligramo(): ?string
+    {
+        return $this->miligramo;
+    }
+
+    public function setMiligramo(string $miligramo): self
+    {
+        $this->miligramo = $miligramo;
+
+        return $this;
+    }
+
+    public function getIdFarmaco(): ?TblFarmacos
+    {
+        return $this->idFarmaco;
+    }
+
+    public function setIdFarmaco(?TblFarmacos $idFarmaco): self
+    {
+        $this->idFarmaco = $idFarmaco;
+
+        return $this;
+    }
+
 
 }

@@ -28,5 +28,22 @@ class TblProvincias
      */
     private $provincia;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getProvincia(): ?string
+    {
+        return $this->provincia;
+    }
+
+    public function setProvincia(string $provincia): self
+    {
+        $this->provincia = $provincia;
+
+        return $this;
+    }
+
 
 }

@@ -28,5 +28,22 @@ class TblSexo
      */
     private $sexo;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getSexo(): ?string
+    {
+        return $this->sexo;
+    }
+
+    public function setSexo(string $sexo): self
+    {
+        $this->sexo = $sexo;
+
+        return $this;
+    }
+
 
 }

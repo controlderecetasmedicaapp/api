@@ -90,5 +90,118 @@ class TblEstablecimientos
      */
     private $idImagen;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getRutEstablecimiento(): ?string
+    {
+        return $this->rutEstablecimiento;
+    }
+
+    public function setRutEstablecimiento(string $rutEstablecimiento): self
+    {
+        $this->rutEstablecimiento = $rutEstablecimiento;
+
+        return $this;
+    }
+
+    public function getNombreEstablecimiento(): ?string
+    {
+        return $this->nombreEstablecimiento;
+    }
+
+    public function setNombreEstablecimiento(string $nombreEstablecimiento): self
+    {
+        $this->nombreEstablecimiento = $nombreEstablecimiento;
+
+        return $this;
+    }
+
+    public function getDireccionEstablecimiento(): ?string
+    {
+        return $this->direccionEstablecimiento;
+    }
+
+    public function setDireccionEstablecimiento(string $direccionEstablecimiento): self
+    {
+        $this->direccionEstablecimiento = $direccionEstablecimiento;
+
+        return $this;
+    }
+
+    public function getFonoEstablecimiento(): ?string
+    {
+        return $this->fonoEstablecimiento;
+    }
+
+    public function setFonoEstablecimiento(string $fonoEstablecimiento): self
+    {
+        $this->fonoEstablecimiento = $fonoEstablecimiento;
+
+        return $this;
+    }
+
+    public function getEmailEstablecimiento(): ?string
+    {
+        return $this->emailEstablecimiento;
+    }
+
+    public function setEmailEstablecimiento(string $emailEstablecimiento): self
+    {
+        $this->emailEstablecimiento = $emailEstablecimiento;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getIdComuna(): ?TblComunas
+    {
+        return $this->idComuna;
+    }
+
+    public function setIdComuna(?TblComunas $idComuna): self
+    {
+        $this->idComuna = $idComuna;
+
+        return $this;
+    }
+
+    public function getIdImagen(): ?TblImagenes
+    {
+        return $this->idImagen;
+    }
+
+    public function setIdImagen(?TblImagenes $idImagen): self
+    {
+        $this->idImagen = $idImagen;
+
+        return $this;
+    }
+
 
 }

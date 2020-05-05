@@ -110,5 +110,142 @@ class TblMedicos
      */
     private $idMedico;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getRcmMedico(): ?string
+    {
+        return $this->rcmMedico;
+    }
+
+    public function setRcmMedico(string $rcmMedico): self
+    {
+        $this->rcmMedico = $rcmMedico;
+
+        return $this;
+    }
+
+    public function getNombreMedico(): ?string
+    {
+        return $this->nombreMedico;
+    }
+
+    public function setNombreMedico(string $nombreMedico): self
+    {
+        $this->nombreMedico = $nombreMedico;
+
+        return $this;
+    }
+
+    public function getApellidosMedico(): ?string
+    {
+        return $this->apellidosMedico;
+    }
+
+    public function setApellidosMedico(string $apellidosMedico): self
+    {
+        $this->apellidosMedico = $apellidosMedico;
+
+        return $this;
+    }
+
+    public function getDireccionMedico(): ?string
+    {
+        return $this->direccionMedico;
+    }
+
+    public function setDireccionMedico(string $direccionMedico): self
+    {
+        $this->direccionMedico = $direccionMedico;
+
+        return $this;
+    }
+
+    public function getEmailMedico(): ?string
+    {
+        return $this->emailMedico;
+    }
+
+    public function setEmailMedico(string $emailMedico): self
+    {
+        $this->emailMedico = $emailMedico;
+
+        return $this;
+    }
+
+    public function getFonoMedico(): ?string
+    {
+        return $this->fonoMedico;
+    }
+
+    public function setFonoMedico(string $fonoMedico): self
+    {
+        $this->fonoMedico = $fonoMedico;
+
+        return $this;
+    }
+
+    public function getFirmaMedico(): ?string
+    {
+        return $this->firmaMedico;
+    }
+
+    public function setFirmaMedico(string $firmaMedico): self
+    {
+        $this->firmaMedico = $firmaMedico;
+
+        return $this;
+    }
+
+    public function getIdComuna(): ?TblComunas
+    {
+        return $this->idComuna;
+    }
+
+    public function setIdComuna(?TblComunas $idComuna): self
+    {
+        $this->idComuna = $idComuna;
+
+        return $this;
+    }
+
+    public function getIdEspecialidad(): ?TblEspecialidades
+    {
+        return $this->idEspecialidad;
+    }
+
+    public function setIdEspecialidad(?TblEspecialidades $idEspecialidad): self
+    {
+        $this->idEspecialidad = $idEspecialidad;
+
+        return $this;
+    }
+
+    public function getIdEstablecimiento(): ?TblEstablecimientos
+    {
+        return $this->idEstablecimiento;
+    }
+
+    public function setIdEstablecimiento(?TblEstablecimientos $idEstablecimiento): self
+    {
+        $this->idEstablecimiento = $idEstablecimiento;
+
+        return $this;
+    }
+
+    public function getIdMedico(): ?TblUsuarios
+    {
+        return $this->idMedico;
+    }
+
+    public function setIdMedico(?TblUsuarios $idMedico): self
+    {
+        $this->idMedico = $idMedico;
+
+        return $this;
+    }
+
 
 }

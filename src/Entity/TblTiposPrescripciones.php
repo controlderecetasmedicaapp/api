@@ -28,5 +28,22 @@ class TblTiposPrescripciones
      */
     private $tipoPrescripcion;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTipoPrescripcion(): ?string
+    {
+        return $this->tipoPrescripcion;
+    }
+
+    public function setTipoPrescripcion(string $tipoPrescripcion): self
+    {
+        $this->tipoPrescripcion = $tipoPrescripcion;
+
+        return $this;
+    }
+
 
 }

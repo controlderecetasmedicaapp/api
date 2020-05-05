@@ -45,5 +45,46 @@ class TblUsuarios
      */
     private $idTipoUsuario;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getRutUsuario(): ?string
+    {
+        return $this->rutUsuario;
+    }
+
+    public function setRutUsuario(string $rutUsuario): self
+    {
+        $this->rutUsuario = $rutUsuario;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getIdTipoUsuario(): ?TblTiposUsuarios
+    {
+        return $this->idTipoUsuario;
+    }
+
+    public function setIdTipoUsuario(?TblTiposUsuarios $idTipoUsuario): self
+    {
+        $this->idTipoUsuario = $idTipoUsuario;
+
+        return $this;
+    }
+
 
 }

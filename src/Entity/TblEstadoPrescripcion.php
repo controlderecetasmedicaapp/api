@@ -28,5 +28,22 @@ class TblEstadoPrescripcion
      */
     private $estado;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getEstado(): ?string
+    {
+        return $this->estado;
+    }
+
+    public function setEstado(string $estado): self
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
 
 }

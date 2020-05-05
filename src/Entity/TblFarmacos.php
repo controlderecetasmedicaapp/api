@@ -38,5 +38,34 @@ class TblFarmacos
      */
     private $idTipoPrescripcion;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNombreFarmaco(): ?string
+    {
+        return $this->nombreFarmaco;
+    }
+
+    public function setNombreFarmaco(string $nombreFarmaco): self
+    {
+        $this->nombreFarmaco = $nombreFarmaco;
+
+        return $this;
+    }
+
+    public function getIdTipoPrescripcion(): ?TblTiposPrescripciones
+    {
+        return $this->idTipoPrescripcion;
+    }
+
+    public function setIdTipoPrescripcion(?TblTiposPrescripciones $idTipoPrescripcion): self
+    {
+        $this->idTipoPrescripcion = $idTipoPrescripcion;
+
+        return $this;
+    }
+
 
 }

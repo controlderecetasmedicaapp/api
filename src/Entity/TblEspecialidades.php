@@ -28,5 +28,22 @@ class TblEspecialidades
      */
     private $especialidad;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getEspecialidad(): ?string
+    {
+        return $this->especialidad;
+    }
+
+    public function setEspecialidad(string $especialidad): self
+    {
+        $this->especialidad = $especialidad;
+
+        return $this;
+    }
+
 
 }
