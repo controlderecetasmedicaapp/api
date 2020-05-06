@@ -212,6 +212,7 @@ class IspController extends AbstractController
      * @param Config $config
      * @param \Swift_Mailer $mailer
      * @param Correo $correo
+     * @param ChileRut $chileRut
      * @return JsonResponse
      */
     public function crearPerfilDoctor(Login $login,
@@ -219,7 +220,8 @@ class IspController extends AbstractController
                                       ValidatorInterface $validator,
                                       Config $config,
                                       \Swift_Mailer $mailer,
-                                      Correo $correo)
+                                      Correo $correo,
+                                      ChileRut $chileRut)
     {
         $response = [];
         $token = $request->headers->get('Authorization', null);
@@ -297,29 +299,36 @@ class IspController extends AbstractController
                         'varError' => $varErrorArray
                     ]);
                 } else {
-                    $medicoExistente = $this->getDoctrine()
-                        ->getRepository(TblUsuarios::class)
-                        ->findBy(['rutUsuario' => $rut]);
-                    if (empty($medicoExistente)) {
-                        $usuario->setPassword(hash('sha256', $usuario->getPassword()));
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($usuario);
-                        $em->flush();
+                    if ($chileRut->check($rut)) {
+                        $medicoExistente = $this->getDoctrine()
+                            ->getRepository(TblUsuarios::class)
+                            ->findBy(['rutUsuario' => $rut]);
+                        if (empty($medicoExistente)) {
+                            $usuario->setPassword(hash('sha256', $usuario->getPassword()));
+                            $em = $this->getDoctrine()->getManager();
+                            $em->persist($usuario);
+                            $em->flush();
 
-                        $medico->setIdMedico($usuario);
-                        $em->persist($medico);
-                        $em->flush();
-                        $correo->enviarEmail($email, $nombre, $apellido, $mailer, $config);
-                        array_push($response, [
-                            'estado' => 'correcto',
-                            'mensaje' => 'Se registro correctamente',
-                            'usuario' => $usuario,
-                            'medico' => $medico
-                        ]);
+                            $medico->setIdMedico($usuario);
+                            $em->persist($medico);
+                            $em->flush();
+                            $correo->enviarEmail($email, $nombre, $apellido, $mailer, $config);
+                            array_push($response, [
+                                'estado' => 'correcto',
+                                'mensaje' => 'Se registro correctamente',
+                                'usuario' => $usuario,
+                                'medico' => $medico
+                            ]);
+                        } else {
+                            array_push($response, [
+                                'estado' => 'error',
+                                'mensaje' => 'El usuario ya existe'
+                            ]);
+                        }
                     } else {
                         array_push($response, [
                             'estado' => 'error',
-                            'mensaje' => 'El usuario ya existe'
+                            'mensaje' => 'El rut es incorrecto'
                         ]);
                     }
                 }
