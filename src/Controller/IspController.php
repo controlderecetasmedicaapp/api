@@ -133,7 +133,7 @@ class IspController extends AbstractController
 
                         $em->persist($isp);
                         $em->flush();
-                        $correo->enviarEmail($email, $nombre, $apellido, $mailer, $config);
+                        $correo->enviarEmail($email, $nombre, $apellido, $mailer, $config,$tipoUsuario->getTipoUsuario() . $rut,$rut,1);
                         array_push($response, [
                             'estado' => 'correcto',
                             'mensaje' => 'Se registro correctamente',
@@ -312,7 +312,7 @@ class IspController extends AbstractController
                             $medico->setIdMedico($usuario);
                             $em->persist($medico);
                             $em->flush();
-                            $correo->enviarEmail($email, $nombre, $apellido, $mailer, $config);
+                            $correo->enviarEmail($email, $nombre, $apellido, $mailer, $config,$tipoUsuario->getTipoUsuario() . $rut,$rut,1);
                             array_push($response, [
                                 'estado' => 'correcto',
                                 'mensaje' => 'Se registro correctamente',
